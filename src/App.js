@@ -16,19 +16,39 @@ function App() {
     })
   }, [])
 
+  useEffect(() => {
+    if (search === '') {
+      setCountries('')
+    }
+    else {
+      const searchResults = allCountries.filter(country => 
+      country.name.common.toLowerCase().includes(search.toLowerCase()))
+      setCountries(searchResults)
+    }
+  }, [search])
+
   const handleSearch = (event) => {
-    console.log(event.target.value)
-    setSearch(event.target.value)
-    const searchResults = allCountries.filter(country => 
-    country.name.common.toLowerCase().includes(search.toLowerCase()))
-    setCountries(searchResults)
+    if (event.target.value === ' ') {
+      setCountries('')
+      setSearch('')
+    }
+    else {
+      setSearch(event.target.value)
+      console.log(search)
+    }
   }
 
+  const handleClick = (result) => {
+    const clickResults = allCountries.filter(country => 
+    country.name.common.toLowerCase().includes(result.country.toLowerCase()))
+    setCountries(clickResults)
+    console.log(result)
+  }
 
   return (
     <div>
     <Search search={search} handlesearch={handleSearch}/>
-    <Results countries={countries}/>
+    <Results countries={countries} handleclick={handleClick}/>
     </div>
   );
 }
